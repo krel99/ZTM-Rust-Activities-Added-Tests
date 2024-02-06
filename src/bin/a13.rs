@@ -39,7 +39,22 @@ fn main() {
     print_number(my_vector);
 }
 
+#[cfg(test)]
+use assert_cmd::prelude::*;
+use predicates::prelude::*;
+use std::process::Command;
+
 #[test]
-fn run_with_defaults() {}
+fn run_main() {
+    Command::cargo_bin("a13").unwrap().assert().success();
+}
+
+#[test]
+fn output_contains_thirty() {
+    let mut cmd = Command::cargo_bin("a13").unwrap();
+    cmd.assert()
+        .success()
+        .stdout(predicate::str::contains("Thirty"));
+}
 
 //cargo test --bin a13
